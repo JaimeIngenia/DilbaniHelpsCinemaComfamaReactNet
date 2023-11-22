@@ -44,7 +44,7 @@ const Tareas = () => {
     const [name, setName] = useState('');
     const inputRef = useRef(null);
     
-    const onNameChange = (event) => {
+    const onNameChangeA = (event) => {
       setName(event.target.value);
       alert("aqui ***"+event.target.value )
     };
@@ -97,43 +97,56 @@ const Tareas = () => {
         alert("Usted dilbani"+ selectedValue)
     }
     const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue2, setSelectedValue2] = useState(null);
     
-    const onNameChange2 = (selectedOption) => {
+    const onNameChange = (selectedOption) => {
         // Actualiza el estado con el nuevo valor seleccionado
         setSelectedValue(selectedOption);
     alert(selectedOption)
         // Paso 3: Muestra un alert con el valor actualizado
         //alert(`Valor seleccionado: ${selectedOption ? selectedOption.value : 'Ninguno'}`);
       };
-      
+      const onNameChange2 = (selectedOption) => {
+        // Actualiza el estado con el nuevo valor seleccionado
+        setSelectedValue(selectedOption);
+    alert(selectedOption)
+        // Paso 3: Muestra un alert con el valor actualizado
+        //alert(`Valor seleccionado: ${selectedOption ? selectedOption.value : 'Ninguno'}`);
+      };
+        // Estado para almacenar los valores del formulario
+  const [formData, setFormData] = useState({
+    valor: '',
+    sinopsis: '',
+    imagen: '',
+    titulo: '',
+  });
+        // Función para manejar el envío del formulario
+  const handleGuardar = () => {
+    // Acciones necesarias con los valores, como enviarlos a un servidor o almacenarlos localmente.
+    console.log('Valores guardados:', formData);
+
+    // Puedes reiniciar el estado después de guardar si es necesario
+    setFormData({
+      valor: '',
+      sinopsis: '',
+      imagen: '',
+      titulo: '',
+    });
+    alert(` ${selectedValue}, ${selectedValue2} ${formData.titulo} , ${formData.imagen}, ${formData.sinopsis} , ${formData.valor}`);
+  };
+  // Función para manejar el cambio en los campos del formulario
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
     return (
         <>
 
-            <Select
-                style={{
-                    width: 300,
-                }}
-                placeholder="custom dropdown render"
-                onChange={onNameChange2}
-                options={tareas.map((item) => ({
-                    label: item.nombreGenero,
-                    value: item.id,
-                }))}
-                value={selectedValue}
-            />
-            <Select
-                style={{
-                    width: 300,
-                }}
-                placeholder="escoge tu formato"
-                //onChange={onNameChange2}
-                options={tareas2.map((item) => ({
-                    label: item.nombreFormato,
-                    value: item.id,
-                }))}
-                //value={selectedValue}
-            />
+
 
 
 
@@ -214,12 +227,73 @@ const Tareas = () => {
 
             </div>   
 
+            <div>
+
+            <Select
+                style={{
+                    width: 300,
+                }}
+                placeholder="custom dropdown render"
+                onChange={onNameChange}
+                options={tareas.map((item) => ({
+                    label: item.nombreGenero,
+                    value: item.id,
+                }))}
+                value={selectedValue}
+            />
+            <Select
+                style={{
+                    width: 300,
+                }}
+                placeholder="escoge tu formato"
+                onChange={onNameChange2}
+                options={tareas2.map((item) => ({
+                    label: item.nombreFormato,
+                    value: item.id,
+                }))}
+                value={selectedValue2}
+            />
+
+
+      <form>
+        <label>
+          Valor:
+          <input type="text" name="valor" value={formData.valor} onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Sinopsis:
+          <textarea name="sinopsis" value={formData.sinopsis} onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Imagen:
+          <input type="text" name="imagen" value={formData.imagen} onChange={handleChange} />
+        </label>
+        <br />
+        <label>
+          Título:
+          <input type="text" name="titulo" value={formData.titulo} onChange={handleChange} />
+        </label>
+        <br />
+        <button type="button" onClick={handleGuardar}>
+          Guardar
+        </button>
+      </form>
+    </div>
+
 
             <Button 
                 type="primary"
                 onClick={dilbani}
                 >
                 Guardar
+            </Button>
+
+            <Button 
+                onClick={handleGuardar}
+            >
+                Guardar2
             </Button>
 
         </>
